@@ -5,6 +5,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
+#include "InputActionValue.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -40,7 +43,8 @@ ATPSPlayer::ATPSPlayer()
 
 	bUseControllerRotationYaw = true;
 	SpringArmComp->bUsePawnControlRotation = true;
-	GetCharacterMovement()->bOrientRotationToMovement = false;
+	CameraComp->bUsePawnControlRotation = false;
+	// 카메라는 스프링 암을 따라가기 때문에 카메라 회전은 체크 비활성화
 
 	JumpMaxCount = 2;
 	GetCharacterMovement()->AirControl = 1;
@@ -50,6 +54,16 @@ ATPSPlayer::ATPSPlayer()
 void ATPSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	auto pc = Cast<APlayerController>(Controller);
+	if (pc)
+	{
+		auto subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(pc->GetLocalPlayer());
+		if (subsystem)
+		{
+			subsystem->AddMappingContext(IMC_TPS, 0);
+		}
+	}
 	
 }
 
@@ -58,13 +72,14 @@ void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Direction 을 정규화 한다.
-	Direction.Normalize();
-	// Direction 을 컨트롤러를 기준으로 방향을 재정렬한다.
-	FTransform ControllerTransform = FTransform(GetControlRotation());
-	FVector dir = ControllerTransform.TransformVector(Direction);
-	// Direction 의 방향으로 이동한다.
-	AddMovementInput(dir);
+	Direction = FTransform(GetControlRotation()).TransformVector(Direction);
+	// 등속 운동 공식 : P (이동할 위치) = P0 (현재 위치) + V (속도 * 방향) * T (시간)
+	/*FVector P0 = GetActorLocation();
+	FVector VT = Direction * WalkSpeed * DeltaTime;
+	FVector P = P0 + VT;
+	SetActorLocation(P);*/
+	AddMovementInput(Direction);
+	Direction = FVector::ZeroVector;
 }
 
 // Called to bind functionality to input
@@ -73,37 +88,41 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	// 입력 함수들을 모두 연결
 
-	PlayerInputComponent->BindAxis(TEXT("Look Up / Down Mouse"), this, &ATPSPlayer::AxisLookUp);
-	PlayerInputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &ATPSPlayer::AxisForwardBackward);
-	PlayerInputComponent->BindAxis(TEXT("Move Right / Left"), this, &ATPSPlayer::AxisRightLeft);
-	PlayerInputComponent->BindAxis(TEXT("Turn Right / Left Mouse"), this, &ATPSPlayer::AxisTurn);
+	auto PlayerInput = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	if (PlayerInput)
+	{
+		PlayerInput->BindAction(IA_Turn, ETriggerEvent::Triggered, this, &ATPSPlayer::Turn);
+		PlayerInput->BindAction(IA_LookUp, ETriggerEvent::Triggered, this, &ATPSPlayer::LookUp);
+		PlayerInput->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
+		PlayerInput->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &ATPSPlayer::InputJump);
+	}
 
-	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ATPSPlayer::ActionJump);
-	
 }
 
-void ATPSPlayer::AxisRightLeft(float value)
+void ATPSPlayer::Turn(const FInputActionValue& inputValue)
 {
-	Direction.Y = value;
-}
-
-void ATPSPlayer::AxisForwardBackward(float value)
-{
-	Direction.X = value;
-}
-
-void ATPSPlayer::AxisLookUp(float value)
-{
-	AddControllerPitchInput(value);
-}
-
-void ATPSPlayer::AxisTurn(float value)
-{
+	float value = inputValue.Get<float>();
 	AddControllerYawInput(value);
 }
 
-void ATPSPlayer::ActionJump()
+void ATPSPlayer::LookUp(const FInputActionValue& inputValue)
+{
+	float value = inputValue.Get<float>();
+	AddControllerPitchInput(value);
+}
+
+void ATPSPlayer::Move(const FInputActionValue& inputValue)
+{
+	FVector2D value = inputValue.Get<FVector2D>();
+	// 상하 입력 처리
+	Direction.X = value.X;
+	// 좌우 입력 처리
+	Direction.Y = value.Y;
+}
+
+void ATPSPlayer::InputJump(const FInputActionValue& inputValue)
 {
 	Jump();
 }
+
 
