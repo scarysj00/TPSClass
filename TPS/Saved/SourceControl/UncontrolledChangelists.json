@@ -10,7 +10,9 @@
 				"D:/SJ_UE5_Work/TestTPS/TPS/Content/Input/IA_PlayerMove.uasset",
 				"D:/SJ_UE5_Work/TestTPS/TPS/Content/Input/IMC_TPS.uasset",
 				"D:/SJ_UE5_Work/TestTPS/TPS/Content/Level/TPSMap.umap",
-				"D:/SJ_UE5_Work/TestTPS/TPS/Content/Input/IA_PlayerJump.uasset"
+				"D:/SJ_UE5_Work/TestTPS/TPS/Content/Input/IA_PlayerJump.uasset",
+				"D:/SJ_UE5_Work/TestTPS/TPS/Content/Input/IA_Fire.uasset",
+				"D:/SJ_UE5_Work/TestTPS/TPS/Content/Blueprint/BP_Bullet.uasset"
 			]
 		}
 	]

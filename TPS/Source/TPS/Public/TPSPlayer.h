@@ -63,4 +63,7 @@ public:
 	// 점프 입력 처리
 	void InputJump(const struct FInputActionValue& inputValue);
 	
+	// 플레이어 이동 처리
+	void PlayerMove();
+	
 };

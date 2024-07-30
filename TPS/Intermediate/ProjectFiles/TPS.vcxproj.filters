@@ -11,6 +11,7 @@
     <None Include="..\..\Source\TPSEditor.Target.cs">
       <Filter>Source</Filter>
     </None>
+    <None Include="..\..\.vsconfig" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
@@ -35,6 +36,9 @@
     <Filter Include="Source\TPS\Private">
       <UniqueIdentifier>{2A6A64DD-3404-37B8-9C3F-BC4751D788E0}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\TPS\Private\Bullet.cpp">
+      <Filter>Source\TPS\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\TPS\Private\TPS.cpp">
       <Filter>Source\TPS\Private</Filter>
     </ClCompile>
@@ -47,6 +51,9 @@
     <Filter Include="Source\TPS\Public">
       <UniqueIdentifier>{6FA44E21-295B-377C-9249-F536BA3D3FA7}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="..\..\Source\TPS\Public\Bullet.h">
+      <Filter>Source\TPS\Public</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\TPS\Public\TPS.h">
       <Filter>Source\TPS\Public</Filter>
     </ClInclude>

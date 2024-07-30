@@ -41,10 +41,11 @@ ATPSPlayer::ATPSPlayer()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
 	}
 
-	bUseControllerRotationYaw = true;
+	bUseControllerRotationYaw = false;
 	SpringArmComp->bUsePawnControlRotation = true;
 	CameraComp->bUsePawnControlRotation = false;
 	// 카메라는 스프링 암을 따라가기 때문에 카메라 회전은 체크 비활성화
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	JumpMaxCount = 2;
 	GetCharacterMovement()->AirControl = 1;
@@ -72,14 +73,7 @@ void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Direction = FTransform(GetControlRotation()).TransformVector(Direction);
-	// 등속 운동 공식 : P (이동할 위치) = P0 (현재 위치) + V (속도 * 방향) * T (시간)
-	/*FVector P0 = GetActorLocation();
-	FVector VT = Direction * WalkSpeed * DeltaTime;
-	FVector P = P0 + VT;
-	SetActorLocation(P);*/
-	AddMovementInput(Direction);
-	Direction = FVector::ZeroVector;
+	PlayerMove();
 }
 
 // Called to bind functionality to input
@@ -123,6 +117,18 @@ void ATPSPlayer::Move(const FInputActionValue& inputValue)
 void ATPSPlayer::InputJump(const FInputActionValue& inputValue)
 {
 	Jump();
+}
+
+void ATPSPlayer::PlayerMove()
+{
+	Direction = FTransform(GetControlRotation()).TransformVector(Direction);
+	// 등속 운동 공식 : P (이동할 위치) = P0 (현재 위치) + V (속도 * 방향) * T (시간)
+	/*FVector P0 = GetActorLocation();
+	FVector VT = Direction * WalkSpeed * DeltaTime;
+	FVector P = P0 + VT;
+	SetActorLocation(P);*/
+	AddMovementInput(Direction);
+	Direction = FVector::ZeroVector;
 }
 
 
