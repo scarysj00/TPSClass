@@ -2,13 +2,37 @@
 
 
 #include "Bullet.h"
+#include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 ABullet::ABullet()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// 1. 충돌체를 Root Component 로 만들고 반지름은 12.5f 로 설정한다.
+	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComp"));
+	CollisionComp->SetSphereRadius(13.f);
+	// Collision Comp - Collision 설정
+	CollisionComp->SetCollisionProfileName(TEXT("BlockAll"));
+
+	// 2. 외관을 충돌체에 붙이고 크기는 0.25f 로 설정한다.
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
+	MeshComp->SetupAttachment(CollisionComp);
+	MeshComp->SetRelativeScale3D(FVector(0.1f));
+	// Mesh Comp - Collision 설정 
+	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+
+	// 3. Move Component 를 만들고 속력과 바운스를 설정한다.
+	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
+	MovementComp->InitialSpeed = 5000.f;
+	MovementComp->InitialSpeed = 5000.f;
+	MovementComp->bShouldBounce = true;
+	MovementComp->Bounciness = .3f;
+
+	MovementComp->SetUpdatedComponent(CollisionComp);
 }
 
 // Called when the game starts or when spawned

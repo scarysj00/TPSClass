@@ -23,4 +23,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	// 충돌체, 외관, 발사체 이동
+	UPROPERTY(EditAnywhere)
+	class USphereComponent* CollisionComp;
+
+	UPROPERTY(EditAnywhere)
+	class UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(EditAnywhere)
+	class UProjectileMovementComponent* MovementComp;
 };
