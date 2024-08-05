@@ -2,12 +2,14 @@
 
 
 #include "TPSPlayer.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "InputActionValue.h"
+#include "Bullet.h"
+
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -49,6 +51,27 @@ ATPSPlayer::ATPSPlayer()
 
 	JumpMaxCount = 2;
 	GetCharacterMovement()->AirControl = 1;
+
+	// 권총 (BerettaPistol의 정보)
+	// (X=-5.077071,Y=51.940998,Z=140.000000)
+	// (Pitch=0.000000,Yaw=-70.000000,Roll=0.000000)
+	// (X=2.000000,Y=2.000000,Z=2.000000)
+	// "/Script/Engine.SkeletalMesh'/Game/Resource/Bereta/source/BerettaPistol.BerettaPistol'"
+
+	// 권총을 생성하고 에셋 적용해서 플레이어에 배치하자.
+	BerettaPistol = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BerettaPistol"));
+	// 권총을 Mesh에 붙인다.
+	BerettaPistol->SetupAttachment(GetMesh());
+	BerettaPistol->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBerettaPistol(TEXT("/Script/Engine.SkeletalMesh'/Game/Resource/Bereta/source/BerettaPistol.BerettaPistol'"));
+
+	if (tempBerettaPistol.Succeeded())
+	{
+		BerettaPistol->SetSkeletalMesh(tempBerettaPistol.Object);
+		BerettaPistol->SetRelativeLocationAndRotation(FVector(-5.f, 52.f, 140.f),FRotator(0, -60, 0));
+		BerettaPistol->SetRelativeScale3D(FVector(2.f));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -88,7 +111,8 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		PlayerInput->BindAction(IA_Turn, ETriggerEvent::Triggered, this, &ATPSPlayer::Turn);
 		PlayerInput->BindAction(IA_LookUp, ETriggerEvent::Triggered, this, &ATPSPlayer::LookUp);
 		PlayerInput->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
-		PlayerInput->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &ATPSPlayer::InputJump);
+		PlayerInput->BindAction(IA_Jump, ETriggerEvent::Started, this, &ATPSPlayer::InputJump);
+		PlayerInput->BindAction(IA_Fire, ETriggerEvent::Started, this, &ATPSPlayer::InputFire);
 	}
 
 }
@@ -131,4 +155,9 @@ void ATPSPlayer::PlayerMove()
 	Direction = FVector::ZeroVector;
 }
 
-
+void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
+{
+	// 총알을 생성해서 권총의 총구 위치에 배치한다.
+	FTransform FirePosition = BerettaPistol->GetSocketTransform(TEXT("FirePosition"));
+	GetWorld()->SpawnActor<ABullet>(BulletFactory, FirePosition);
+}

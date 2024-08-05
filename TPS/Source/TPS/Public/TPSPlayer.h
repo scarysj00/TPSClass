@@ -34,6 +34,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* CameraComp;
 
+	// 컴포넌트 - Weapon (권총)
+	UPROPERTY(EditAnywhere, Category=Weapon)
+	class USkeletalMeshComponent* BerettaPistol;
+
+public:
+	UPROPERTY(EditAnywhere, Category=BulletFactory)
+	TSubclassOf<class ABullet> BulletFactory;
+
 public:
 	// 입력 처리 함수 제작
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -65,5 +73,9 @@ public:
 	
 	// 플레이어 이동 처리
 	void PlayerMove();
-	
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* IA_Fire;
+	// 총알 발사 처리
+	void InputFire(const struct FInputActionValue& inputValue);
 };

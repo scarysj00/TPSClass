@@ -32,4 +32,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UProjectileMovementComponent* MovementComp;
+
+	// 총알 제거 함수
+	void Die();
 };
