@@ -3,13 +3,12 @@
 
 #include "TPSPlayer.h"
 #include "Camera/CameraComponent.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Bullet.h"
-
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -59,19 +58,35 @@ ATPSPlayer::ATPSPlayer()
 	// "/Script/Engine.SkeletalMesh'/Game/Resource/Bereta/source/BerettaPistol.BerettaPistol'"
 
 	// 권총을 생성하고 에셋 적용해서 플레이어에 배치하자.
-	BerettaPistol = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BerettaPistol"));
+	HandGun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BerettaPistol"));
 	// 권총을 Mesh에 붙인다.
-	BerettaPistol->SetupAttachment(GetMesh());
-	BerettaPistol->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	HandGun->SetupAttachment(GetMesh());
+	HandGun->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBerettaPistol(TEXT("/Script/Engine.SkeletalMesh'/Game/Resource/Bereta/source/BerettaPistol.BerettaPistol'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempHandGun(TEXT("/Script/Engine.SkeletalMesh'/Game/Resource/Beretta/source/BerettaPistol.BerettaPistol'"));
 
-	if (tempBerettaPistol.Succeeded())
+	if (tempHandGun.Succeeded())
 	{
-		BerettaPistol->SetSkeletalMesh(tempBerettaPistol.Object);
-		BerettaPistol->SetRelativeLocationAndRotation(FVector(-5.f, 52.f, 140.f),FRotator(0, -60, 0));
-		BerettaPistol->SetRelativeScale3D(FVector(2.f));
+		HandGun->SetSkeletalMesh(tempHandGun.Object);
+		HandGun->SetRelativeLocationAndRotation(FVector(-5.f, 52.f, 140.f),FRotator(0, -60, 0));
+		HandGun->SetRelativeScale3D(FVector(2.f));
 	}
+
+	// 스나이퍼 건을 생성해서 Mesh에 붙인다.
+	SniperGun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CheyTacRifle"));
+	SniperGun->SetupAttachment(GetMesh());
+	// 에셋도 로드해서 적용한다.
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempSniperGun(TEXT("/Script/Engine.SkeletalMesh'/Game/Resource/CheyTac/source/model.model'"));
+
+	if (tempSniperGun.Succeeded())
+	{
+		SniperGun->SetSkeletalMesh(tempSniperGun.Object);
+		SniperGun->SetRelativeLocationAndRotation(FVector(-14.6f, 63.7f, 147.f), FRotator(0, 0, 0));
+		SniperGun->SetRelativeScale3D(FVector(0.015f));
+	}
+	// Location (X=-14.600000,Y=63.700000,Z=147.000000)
+	// Rotation (Pitch = 0.000000, Yaw = 0.000000, Roll = 0.000000)
+	// Scale (X = 0.015000, Y = 0.015000, Z = 0.015000)0,
 }
 
 // Called when the game starts or when spawned
@@ -88,7 +103,8 @@ void ATPSPlayer::BeginPlay()
 			subsystem->AddMappingContext(IMC_TPS, 0);
 		}
 	}
-	
+	// 소총(Sniper Gun)으로 기본 설정
+	ChangeToSniperGun(FInputActionValue());
 }
 
 // Called every frame
@@ -112,9 +128,12 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		PlayerInput->BindAction(IA_LookUp, ETriggerEvent::Triggered, this, &ATPSPlayer::LookUp);
 		PlayerInput->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
 		PlayerInput->BindAction(IA_Jump, ETriggerEvent::Started, this, &ATPSPlayer::InputJump);
+		
 		PlayerInput->BindAction(IA_Fire, ETriggerEvent::Started, this, &ATPSPlayer::InputFire);
+		// 총 교체 이벤트 처리
+		PlayerInput->BindAction(IA_HandGun, ETriggerEvent::Started, this, &ATPSPlayer::ChangeToHandGun);
+		PlayerInput->BindAction(IA_SniperGun, ETriggerEvent::Started, this, &ATPSPlayer::ChangeToSniperGun);
 	}
-
 }
 
 void ATPSPlayer::Turn(const FInputActionValue& inputValue)
@@ -158,6 +177,22 @@ void ATPSPlayer::PlayerMove()
 void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 {
 	// 총알을 생성해서 권총의 총구 위치에 배치한다.
-	FTransform FirePosition = BerettaPistol->GetSocketTransform(TEXT("FirePosition"));
+	FTransform FirePosition = HandGun->GetSocketTransform(TEXT("FirePosition"));
 	GetWorld()->SpawnActor<ABullet>(BulletFactory, FirePosition);
+}
+
+void ATPSPlayer::ChangeToHandGun(const FInputActionValue& inputValue)
+{
+	// 권총(Hand Gun) 사용
+	bUsingHandGun = true;
+	SniperGun->SetVisibility(false);
+	HandGun->SetVisibility(true);
+}
+
+void ATPSPlayer::ChangeToSniperGun(const FInputActionValue& inputValue)
+{
+	// 소총(Sniper Gun) 사용
+	bUsingHandGun = false;
+	SniperGun->SetVisibility(true);
+	HandGun->SetVisibility(false);
 }

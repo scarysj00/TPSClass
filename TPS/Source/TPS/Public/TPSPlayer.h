@@ -36,7 +36,11 @@ public:
 
 	// 컴포넌트 - Weapon (권총)
 	UPROPERTY(EditAnywhere, Category=Weapon)
-	class USkeletalMeshComponent* BerettaPistol;
+	class USkeletalMeshComponent* HandGun;
+
+	// 컴포넌트 - Weapon (소총)
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	class USkeletalMeshComponent* SniperGun;
 
 public:
 	UPROPERTY(EditAnywhere, Category=BulletFactory)
@@ -78,4 +82,16 @@ public:
 	class UInputAction* IA_Fire;
 	// 총알 발사 처리
 	void InputFire(const struct FInputActionValue& inputValue);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* IA_HandGun;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* IA_SniperGun;
+
+	// 권총(Hand Gun)을 사용 중인지 확인
+	bool bUsingHandGun = true;
+	// 권총(Hand Gun)으로 변경
+	void ChangeToHandGun(const struct FInputActionValue& inputValue);
+	// 소총(Sniper Gun)으로 변경
+	void ChangeToSniperGun(const struct FInputActionValue& inputValue);
 };
