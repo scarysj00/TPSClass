@@ -90,6 +90,8 @@ public:
 
 	// 권총(Hand Gun)을 사용 중인지 확인
 	bool bUsingHandGun = true;
+	// 소총(Sinper Gun)을 사용 중인지 확인
+	bool bUsingSniperGun = true;
 	// 권총(Hand Gun)으로 변경
 	void ChangeToHandGun(const struct FInputActionValue& inputValue);
 	// 소총(Sniper Gun)으로 변경

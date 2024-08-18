@@ -60,7 +60,7 @@ ATPSPlayer::ATPSPlayer()
 	// 권총을 생성하고 에셋 적용해서 플레이어에 배치하자.
 	HandGun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BerettaPistol"));
 	// 권총을 Mesh에 붙인다.
-	HandGun->SetupAttachment(GetMesh());
+	HandGun->SetupAttachment(GetMesh(), TEXT("FirePosition"));
 	HandGun->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempHandGun(TEXT("/Script/Engine.SkeletalMesh'/Game/Resource/Beretta/source/BerettaPistol.BerettaPistol'"));
@@ -74,7 +74,9 @@ ATPSPlayer::ATPSPlayer()
 
 	// 스나이퍼 건을 생성해서 Mesh에 붙인다.
 	SniperGun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CheyTacRifle"));
-	SniperGun->SetupAttachment(GetMesh());
+	SniperGun->SetupAttachment(GetMesh(), TEXT("ShotPosition"));
+	SniperGun->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	// 에셋도 로드해서 적용한다.
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempSniperGun(TEXT("/Script/Engine.SkeletalMesh'/Game/Resource/CheyTac/source/model.model'"));
 
@@ -103,8 +105,8 @@ void ATPSPlayer::BeginPlay()
 			subsystem->AddMappingContext(IMC_TPS, 0);
 		}
 	}
-	// 소총(Sniper Gun)으로 기본 설정
-	ChangeToSniperGun(FInputActionValue());
+	// 권총(Hand Gun)으로 기본 설정
+	ChangeToHandGun(FInputActionValue());
 }
 
 // Called every frame
@@ -177,8 +179,17 @@ void ATPSPlayer::PlayerMove()
 void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 {
 	// 총알을 생성해서 권총의 총구 위치에 배치한다.
-	FTransform FirePosition = HandGun->GetSocketTransform(TEXT("FirePosition"));
-	GetWorld()->SpawnActor<ABullet>(BulletFactory, FirePosition);
+	if (bUsingHandGun * (true))
+	{
+		//bUsingHandGun = true;
+		FTransform FirePosition = HandGun->GetSocketTransform(TEXT("FirePosition"));
+		GetWorld()->SpawnActor<ABullet>(BulletFactory, FirePosition);
+	}
+	else if (bUsingSniperGun * (true))
+	{
+		FTransform ShotPosition = SniperGun->GetSocketTransform(TEXT("ShotPosition"));
+		GetWorld()->SpawnActor<ABullet>(BulletFactory, ShotPosition);
+	}	
 }
 
 void ATPSPlayer::ChangeToHandGun(const FInputActionValue& inputValue)
