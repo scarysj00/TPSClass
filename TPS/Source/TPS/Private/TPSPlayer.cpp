@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Bullet.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -96,6 +97,21 @@ void ATPSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// 2. 시작할 때 두 개의 위젯을 생성한다.
+	CrosshairUI = CreateWidget(GetWorld(), CrosshairUIfactory);
+	SniperUI = CreateWidget(GetWorld(), SniperUIfactory);
+	//// 화면에 나오게 한다.
+	//CrosshairUI->AddToViewport();
+	//SniperUI->AddToViewport();
+	//// 화면에서 안보이게 한다.
+	//CrosshairUI->RemoveFromParent();
+	//SniperUI->RemoveFromParent();
+	
+	// 3. 크로스헤어 UI를 화면에 보이게 한다.
+	// 4. 1번 키와 2번 키를 누르면 각각 크로스헤어, 스나이퍼 UI를 보이게 한다.
+	// 5. 스나이퍼 UI가 보일 때는 ZoomIn 을 하고, 그 외에는 ZoomOut 을 한다.
+
+
 	auto pc = Cast<APlayerController>(Controller);
 	if (pc)
 	{
@@ -107,6 +123,7 @@ void ATPSPlayer::BeginPlay()
 	}
 	// 권총(Hand Gun)으로 기본 설정
 	ChangeToHandGun(FInputActionValue());
+
 }
 
 // Called every frame
@@ -135,6 +152,10 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		// 총 교체 이벤트 처리
 		PlayerInput->BindAction(IA_HandGun, ETriggerEvent::Started, this, &ATPSPlayer::ChangeToHandGun);
 		PlayerInput->BindAction(IA_SniperGun, ETriggerEvent::Started, this, &ATPSPlayer::ChangeToSniperGun);
+		// 스나이퍼 조준 모드
+		PlayerInput->BindAction(IA_Sniper, ETriggerEvent::Started, this, &ATPSPlayer::SniperAim);
+		PlayerInput->BindAction(IA_Sniper, ETriggerEvent::Completed, this, &ATPSPlayer::SniperAim);
+
 	}
 }
 
@@ -198,12 +219,44 @@ void ATPSPlayer::ChangeToHandGun(const FInputActionValue& inputValue)
 	bUsingHandGun = true;
 	SniperGun->SetVisibility(false);
 	HandGun->SetVisibility(true);
+	//CrosshairUI->AddToViewport();
+	//SniperUI->RemoveFromParent();
+	//CameraComp->FieldOfView = 90;
 }
-
 void ATPSPlayer::ChangeToSniperGun(const FInputActionValue& inputValue)
 {
 	// 소총(Sniper Gun) 사용
 	bUsingHandGun = false;
 	SniperGun->SetVisibility(true);
 	HandGun->SetVisibility(false);
+	//SniperUI->AddToViewport();
+	//CrosshairUI->RemoveFromParent();
+	//CameraComp->FieldOfView = 45;
+}
+
+void ATPSPlayer::SniperAim(const struct FInputActionValue& inputValue)
+{
+	// 스나이퍼 모드가 아닐 경우 처리하지 않는다
+	if (bUsingHandGun)
+	{
+		return;
+	}
+	// Pressed 입력 처리
+	if (bSniperAim == false)
+	{
+		// 스나이퍼 조준 모드 활성화
+		bSniperAim = true;
+		// 스나이퍼 조준 UI 등록
+		SniperUI->AddToViewport();
+		CameraComp->SetFieldOfView(45.0f);
+	}
+	// Released 입력 처리
+	else
+	{
+		// 스나이퍼 조준 모드 비활성화
+		bSniperAim = false;
+		// 스나이퍼 조준 UI 화면에서 제거
+		SniperUI->RemoveFromParent();
+		CameraComp->SetFieldOfView(90.0f);
+	}
 }
