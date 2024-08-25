@@ -11,6 +11,7 @@
 #include "Bullet.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "EnemyFSM.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -123,8 +124,8 @@ void ATPSPlayer::BeginPlay()
 			subsystem->AddMappingContext(IMC_TPS, 0);
 		}
 	}
-	// 권총(Hand Gun)으로 기본 설정
-	ChangeToHandGun(FInputActionValue());
+	// 소총(Sniper Gun)으로 기본 설정
+	ChangeToSniperGun(FInputActionValue());
 
 }
 
@@ -249,6 +250,14 @@ void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 			FVector Force = Dir * HitComp->GetMass() * 500000;
 			// 3. 그 방향으로 날리고 싶다.
 			HitComp->AddForceAtLocation(Force, HitInfo.ImpactPoint);
+		}
+		
+		// 부딪힌 대상이 적인지 판단
+		auto Enemy = HitInfo.GetActor()->GetDefaultSubobjectByName(TEXT("EnemyFSM"));
+		if (Enemy)
+		{
+			auto EnemyFSM = Cast<UEnemyFSM>(Enemy);
+			EnemyFSM->OnDamageProcess();
 		}
 	}	
 }
