@@ -44,7 +44,7 @@ ATPSPlayer::ATPSPlayer()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
 	}
 
-	bUseControllerRotationYaw = false;
+	bUseControllerRotationYaw = true;
 	SpringArmComp->bUsePawnControlRotation = true;
 	CameraComp->bUsePawnControlRotation = false;
 	// 카메라는 스프링 암을 따라가기 때문에 카메라 회전은 체크 비활성화
