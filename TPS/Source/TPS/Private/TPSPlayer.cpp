@@ -10,6 +10,7 @@
 #include "InputActionValue.h"
 #include "Bullet.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -21,7 +22,7 @@ ATPSPlayer::ATPSPlayer()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->SetupAttachment(RootComponent);
 	// Spring Arm -> Target Arm Length : 400
-	SpringArmComp->TargetArmLength = 400;
+	SpringArmComp->TargetArmLength = 300;
 	// 위치 (X = 0.000000, Y = 50.000000, Z = 80.000000) 
 	SpringArmComp->SetRelativeLocation(FVector(0, 50, 80));
 
@@ -97,20 +98,21 @@ void ATPSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 2. 시작할 때 두 개의 위젯을 생성한다.
+	// 시작할 때 두 개의 위젯을 생성한다.
+	// 크로스헤어 UI 위젯 인스턴스 생성
 	CrosshairUI = CreateWidget(GetWorld(), CrosshairUIfactory);
+	// 스나이퍼 UI 위젯 인스턴스 생성
 	SniperUI = CreateWidget(GetWorld(), SniperUIfactory);
+	// 일반 조준 모드 CrosshairUI 화면에 노출
+	CrosshairUI->AddToViewport();
+
+
 	//// 화면에 나오게 한다.
 	//CrosshairUI->AddToViewport();
 	//SniperUI->AddToViewport();
 	//// 화면에서 안보이게 한다.
 	//CrosshairUI->RemoveFromParent();
 	//SniperUI->RemoveFromParent();
-	
-	// 3. 크로스헤어 UI를 화면에 보이게 한다.
-	// 4. 1번 키와 2번 키를 누르면 각각 크로스헤어, 스나이퍼 UI를 보이게 한다.
-	// 5. 스나이퍼 UI가 보일 때는 ZoomIn 을 하고, 그 외에는 ZoomOut 을 한다.
-
 
 	auto pc = Cast<APlayerController>(Controller);
 	if (pc)
@@ -200,16 +202,54 @@ void ATPSPlayer::PlayerMove()
 void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 {
 	// 총알을 생성해서 권총의 총구 위치에 배치한다.
-	if (bUsingHandGun * (true))
+	if (bUsingHandGun)
 	{
 		//bUsingHandGun = true;
 		FTransform FirePosition = HandGun->GetSocketTransform(TEXT("FirePosition"));
 		GetWorld()->SpawnActor<ABullet>(BulletFactory, FirePosition);
 	}
-	else if (bUsingSniperGun * (true))
+	else if (bUsingSniperGun)
 	{
 		FTransform ShotPosition = SniperGun->GetSocketTransform(TEXT("ShotPosition"));
 		GetWorld()->SpawnActor<ABullet>(BulletFactory, ShotPosition);
+
+		// LineTrace 의 시작 위치
+		FVector StartPosition = CameraComp->GetComponentLocation();
+		// LineTrace 의 종료 위치
+		FVector EndPosition = CameraComp->GetComponentLocation() + CameraComp->GetForwardVector() * 100000;
+		// LineTrace 의 충돌 정보를 담을 변수
+		FHitResult HitInfo;
+		// 충돌 옵션 설정 변수
+		FCollisionQueryParams Params;
+		// 자기 자신(플레이어)는 충돌에서 제외
+		Params.AddIgnoredActor(this);
+		// Channel 필터를 이용한 LineTrace 충돌 검출
+		// 충돌 정보, 시작 위치, 종료 위치, 검출 채널, 충돌 옵션
+		bool bHit = GetWorld()->LineTraceSingleByChannel(HitInfo, StartPosition, EndPosition, ECC_Visibility, Params);
+
+		// 충돌 처리 -> 총알 파편 효과 재생
+		if (bHit)
+		{
+			// 총알 파편 효과 트랜스폼
+			FTransform BulletTransform;
+			// 부딪힌 위치 할당
+			BulletTransform.SetLocation(HitInfo.ImpactPoint);
+			// 총알 파편 효과 인스턴스 생성
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BulletEffectFactory, BulletTransform);
+		}
+
+		// 부딪힌 물체의 컴포넌트에 물리가 적용되어 있으면 날려 버리고 싶다.
+		auto HitComp = HitInfo.GetComponent();
+		// 1. 만약 컴포넌트에 물리가 적용되어 있다면
+		if (HitComp && HitComp->IsSimulatingPhysics())
+		{
+			// 2. 조준한 방향이 필요
+			FVector Dir = (EndPosition - StartPosition).GetSafeNormal();
+			// 날려버릴 방향
+			FVector Force = Dir * HitComp->GetMass() * 500000;
+			// 3. 그 방향으로 날리고 싶다.
+			HitComp->AddForceAtLocation(Force, HitInfo.ImpactPoint);
+		}
 	}	
 }
 
@@ -249,6 +289,8 @@ void ATPSPlayer::SniperAim(const struct FInputActionValue& inputValue)
 		// 스나이퍼 조준 UI 등록
 		SniperUI->AddToViewport();
 		CameraComp->SetFieldOfView(45.0f);
+		// 일반 조준 모드 UI 제거
+		CrosshairUI->RemoveFromParent();
 	}
 	// Released 입력 처리
 	else
@@ -258,5 +300,7 @@ void ATPSPlayer::SniperAim(const struct FInputActionValue& inputValue)
 		// 스나이퍼 조준 UI 화면에서 제거
 		SniperUI->RemoveFromParent();
 		CameraComp->SetFieldOfView(90.0f);
+		// 일반 조준 모드 UI 표시
+		CrosshairUI->AddToViewport();
 	}
 }

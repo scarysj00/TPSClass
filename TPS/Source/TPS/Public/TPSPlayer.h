@@ -89,6 +89,7 @@ public:
 	class UInputAction* IA_SniperGun;
 
 	// 권총(Hand Gun)을 사용 중인지 확인
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = TPS)
 	bool bUsingHandGun = true;
 	// 소총(Sinper Gun)을 사용 중인지 확인
 	bool bUsingSniperGun = true;
@@ -118,4 +119,7 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class UUserWidget* SniperUI;
 
+	// 총알 파편 효과 공장
+	UPROPERTY(EditAnywhere, Category=BulletEffect)
+	class UParticleSystem* BulletEffectFactory;
 };
