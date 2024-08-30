@@ -105,7 +105,7 @@ void ATPSPlayer::BeginPlay()
 	// 스나이퍼 UI 위젯 인스턴스 생성
 	SniperUI = CreateWidget(GetWorld(), SniperUIfactory);
 	// 일반 조준 모드 CrosshairUI 화면에 노출
-	CrosshairUI->AddToViewport();
+	// CrosshairUI->AddToViewport();
 
 
 	//// 화면에 나오게 한다.

@@ -1,5 +1,6 @@
-S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\Enemy.h
 S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\Bullet.h
-S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\TPSPlayer.h
-S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\TPSGameMode.h
+S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\Enemy.h
+S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\PlayerAnim.h
 S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\EnemyFSM.h
+S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\TPSGameMode.h
+S:\PolytechGM\TPSClass\TPS\Source\TPS\Public\TPSPlayer.h
