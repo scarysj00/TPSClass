@@ -15,6 +15,12 @@ class TPS_API UPlayerAnim : public UAnimInstance
 	GENERATED_BODY()
 
 public:
+	// (책에) 매 프레임 갱신되는 함수
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	UPROPERTY()
+	class ATPSPlayer* Player;
+
 	// 이동 속도
 	// 앞,뒤로 움직이는 속력
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerAnim)
