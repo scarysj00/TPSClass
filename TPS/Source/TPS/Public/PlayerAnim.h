@@ -22,4 +22,6 @@ public:
 	// 좌,우로 움직이는 속력
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerAnim)
 	float Direction;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerAnim)
+	bool IsInAir;
 };
