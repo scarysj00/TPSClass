@@ -49,7 +49,7 @@ ATPSPlayer::ATPSPlayer()
 	SpringArmComp->bUsePawnControlRotation = true;
 	CameraComp->bUsePawnControlRotation = false;
 	// 카메라는 스프링 암을 따라가기 때문에 카메라 회전은 체크 비활성화
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	JumpMaxCount = 2;
 	GetCharacterMovement()->AirControl = 1;
@@ -98,6 +98,9 @@ ATPSPlayer::ATPSPlayer()
 void ATPSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 초기 속도를 걷기로 설정
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
 	// 시작할 때 두 개의 위젯을 생성한다.
 	// 크로스헤어 UI 위젯 인스턴스 생성
@@ -150,6 +153,9 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		PlayerInput->BindAction(IA_LookUp, ETriggerEvent::Triggered, this, &ATPSPlayer::LookUp);
 		PlayerInput->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
 		PlayerInput->BindAction(IA_Jump, ETriggerEvent::Started, this, &ATPSPlayer::InputJump);
+		// 뛰기 애니메이션
+		PlayerInput->BindAction(IA_Run, ETriggerEvent::Started, this, &ATPSPlayer::InputRun);
+		PlayerInput->BindAction(IA_Run, ETriggerEvent::Completed, this, &ATPSPlayer::InputRun);
 		
 		PlayerInput->BindAction(IA_Fire, ETriggerEvent::Started, this, &ATPSPlayer::InputFire);
 		// 총 교체 이벤트 처리
@@ -158,7 +164,6 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		// 스나이퍼 조준 모드
 		PlayerInput->BindAction(IA_Sniper, ETriggerEvent::Started, this, &ATPSPlayer::SniperAim);
 		PlayerInput->BindAction(IA_Sniper, ETriggerEvent::Completed, this, &ATPSPlayer::SniperAim);
-
 	}
 }
 
@@ -198,6 +203,21 @@ void ATPSPlayer::PlayerMove()
 	SetActorLocation(P);*/
 	AddMovementInput(Direction);
 	Direction = FVector::ZeroVector;
+}
+
+void ATPSPlayer::InputRun()
+{
+	auto Movement = GetCharacterMovement();
+	// 만약, 현재 달리기 모드라면
+	if (Movement->MaxWalkSpeed > WalkSpeed)
+	{
+		// 걷기 속도로 전환
+		Movement->MaxWalkSpeed = WalkSpeed;
+	}
+	else
+	{
+		Movement->MaxWalkSpeed = RunSpeed;
+	}
 }
 
 void ATPSPlayer::InputFire(const FInputActionValue& inputValue)

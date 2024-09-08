@@ -64,7 +64,10 @@ public:
 	class UInputAction* IA_Move;
 	// 이동 속도
 	UPROPERTY(EditAnywhere, Category = PlayerSetting)
-	float WalkSpeed = 600;
+	float WalkSpeed = 300;
+	// 달리기 속도
+	UPROPERTY(EditAnywhere, Category = PlayerSetting)
+	float RunSpeed = 600;
 	// 이동 방향
 	FVector Direction;
 
@@ -77,6 +80,11 @@ public:
 	
 	// 플레이어 이동 처리
 	void PlayerMove();
+
+	// 플레이어 뛰기
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* IA_Run;
+	void InputRun();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputAction* IA_Fire;
@@ -106,7 +114,7 @@ public:
 	bool bSniperAim = false;
 
 
-	// 1. 크로스헤어, 스나이퍼 위젯 UI 공장을 가지고 있다.
+	// 크로스헤어, 스나이퍼 위젯 UI 공장을 가지고 있다.
 	UPROPERTY(EditDefaultsOnly, Category = CrosshairUI)
 	TSubclassOf<class UUserWidget> CrosshairUIfactory;
 

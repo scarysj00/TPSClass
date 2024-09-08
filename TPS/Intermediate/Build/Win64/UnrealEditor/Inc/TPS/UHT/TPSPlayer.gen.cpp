@@ -78,9 +78,17 @@ void EmptyLinkFunctionForGeneratedCodeTPSPlayer() {}
 #endif
 		static const UECodeGen_Private::FFloatPropertyParams NewProp_WalkSpeed;
 #if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_RunSpeed_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_RunSpeed;
+#if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_IA_Jump_MetaData[];
 #endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_IA_Jump;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_IA_Run_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPropertyParams NewProp_IA_Run;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_IA_Fire_MetaData[];
 #endif
@@ -243,12 +251,38 @@ void EmptyLinkFunctionForGeneratedCodeTPSPlayer() {}
 #endif
 	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ATPSPlayer_Statics::NewProp_WalkSpeed = { "WalkSpeed", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATPSPlayer, WalkSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ATPSPlayer_Statics::NewProp_WalkSpeed_MetaData), Z_Construct_UClass_ATPSPlayer_Statics::NewProp_WalkSpeed_MetaData) };
 #if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ATPSPlayer_Statics::NewProp_RunSpeed_MetaData[] = {
+		{ "Category", "PlayerSetting" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xeb\x8b\xac\xeb\xa6\xac\xea\xb8\xb0 \xec\x86\x8d\xeb\x8f\x84\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TPSPlayer.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xeb\x8b\xac\xeb\xa6\xac\xea\xb8\xb0 \xec\x86\x8d\xeb\x8f\x84" },
+#endif
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ATPSPlayer_Statics::NewProp_RunSpeed = { "RunSpeed", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATPSPlayer, RunSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ATPSPlayer_Statics::NewProp_RunSpeed_MetaData), Z_Construct_UClass_ATPSPlayer_Statics::NewProp_RunSpeed_MetaData) };
+#if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Jump_MetaData[] = {
 		{ "Category", "Input" },
 		{ "ModuleRelativePath", "Public/TPSPlayer.h" },
 	};
 #endif
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Jump = { "IA_Jump", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATPSPlayer, IA_Jump), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Jump_MetaData), Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Jump_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Run_MetaData[] = {
+		{ "Category", "Input" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// \xed\x94\x8c\xeb\xa0\x88\xec\x9d\xb4\xec\x96\xb4 \xeb\x9b\xb0\xea\xb8\xb0\n" },
+#endif
+		{ "ModuleRelativePath", "Public/TPSPlayer.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "\xed\x94\x8c\xeb\xa0\x88\xec\x9d\xb4\xec\x96\xb4 \xeb\x9b\xb0\xea\xb8\xb0" },
+#endif
+	};
+#endif
+	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Run = { "IA_Run", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ATPSPlayer, IA_Run), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Run_MetaData), Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Run_MetaData) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Fire_MetaData[] = {
 		{ "Category", "Input" },
@@ -298,11 +332,11 @@ void EmptyLinkFunctionForGeneratedCodeTPSPlayer() {}
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ATPSPlayer_Statics::NewProp_CrosshairUIfactory_MetaData[] = {
 		{ "Category", "CrosshairUI" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// 1. \xed\x81\xac\xeb\xa1\x9c\xec\x8a\xa4\xed\x97\xa4\xec\x96\xb4, \xec\x8a\xa4\xeb\x82\x98\xec\x9d\xb4\xed\x8d\xbc \xec\x9c\x84\xec\xa0\xaf UI \xea\xb3\xb5\xec\x9e\xa5\xec\x9d\x84 \xea\xb0\x80\xec\xa7\x80\xea\xb3\xa0 \xec\x9e\x88\xeb\x8b\xa4.\n" },
+		{ "Comment", "// \xed\x81\xac\xeb\xa1\x9c\xec\x8a\xa4\xed\x97\xa4\xec\x96\xb4, \xec\x8a\xa4\xeb\x82\x98\xec\x9d\xb4\xed\x8d\xbc \xec\x9c\x84\xec\xa0\xaf UI \xea\xb3\xb5\xec\x9e\xa5\xec\x9d\x84 \xea\xb0\x80\xec\xa7\x80\xea\xb3\xa0 \xec\x9e\x88\xeb\x8b\xa4.\n" },
 #endif
 		{ "ModuleRelativePath", "Public/TPSPlayer.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "1. \xed\x81\xac\xeb\xa1\x9c\xec\x8a\xa4\xed\x97\xa4\xec\x96\xb4, \xec\x8a\xa4\xeb\x82\x98\xec\x9d\xb4\xed\x8d\xbc \xec\x9c\x84\xec\xa0\xaf UI \xea\xb3\xb5\xec\x9e\xa5\xec\x9d\x84 \xea\xb0\x80\xec\xa7\x80\xea\xb3\xa0 \xec\x9e\x88\xeb\x8b\xa4." },
+		{ "ToolTip", "\xed\x81\xac\xeb\xa1\x9c\xec\x8a\xa4\xed\x97\xa4\xec\x96\xb4, \xec\x8a\xa4\xeb\x82\x98\xec\x9d\xb4\xed\x8d\xbc \xec\x9c\x84\xec\xa0\xaf UI \xea\xb3\xb5\xec\x9e\xa5\xec\x9d\x84 \xea\xb0\x80\xec\xa7\x80\xea\xb3\xa0 \xec\x9e\x88\xeb\x8b\xa4." },
 #endif
 	};
 #endif
@@ -354,7 +388,9 @@ void EmptyLinkFunctionForGeneratedCodeTPSPlayer() {}
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Turn,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Move,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_WalkSpeed,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_RunSpeed,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Jump,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Run,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_Fire,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_HandGun,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ATPSPlayer_Statics::NewProp_IA_SniperGun,
@@ -404,9 +440,9 @@ void EmptyLinkFunctionForGeneratedCodeTPSPlayer() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_TPSPlayer_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_ATPSPlayer, ATPSPlayer::StaticClass, TEXT("ATPSPlayer"), &Z_Registration_Info_UClass_ATPSPlayer, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATPSPlayer), 3227465205U) },
+		{ Z_Construct_UClass_ATPSPlayer, ATPSPlayer::StaticClass, TEXT("ATPSPlayer"), &Z_Registration_Info_UClass_ATPSPlayer, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATPSPlayer), 297144308U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_TPSPlayer_h_3073791776(TEXT("/Script/TPS"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_TPSPlayer_h_801313060(TEXT("/Script/TPS"),
 		Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_TPSPlayer_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_TPSPlayer_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
