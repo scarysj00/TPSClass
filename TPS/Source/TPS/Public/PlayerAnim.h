@@ -30,4 +30,10 @@ public:
 	float Direction;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerAnim)
 	bool IsInAir;
+
+	// 공격 애니메이션 몽타주
+	UPROPERTY(EditDefaultsOnly, Category = PlayerAnim)
+	class UAnimMontage* AttackAnimMontage;
+	// 공격 애니메이션 함수
+	void PlayAttackAnim();
 };

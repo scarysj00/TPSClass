@@ -31,3 +31,8 @@ void UPlayerAnim::NativeUpdateAnimation(float DeltaSeconds)
 	UCharacterMovementComponent* Movement = Player->GetCharacterMovement();
 	IsInAir = Movement->IsFalling();
 }
+
+void UPlayerAnim::PlayAttackAnim()
+{
+	Montage_Play(AttackAnimMontage);
+}

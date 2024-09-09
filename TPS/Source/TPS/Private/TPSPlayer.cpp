@@ -12,6 +12,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnemyFSM.h"
+#include "PlayerAnim.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -222,6 +223,9 @@ void ATPSPlayer::InputRun()
 
 void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 {
+	auto Anim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
+	Anim->PlayAttackAnim();
+
 	// 총알을 생성해서 권총의 총구 위치에 배치한다.
 	if (bUsingHandGun)
 	{
