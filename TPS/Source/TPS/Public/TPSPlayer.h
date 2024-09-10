@@ -86,10 +86,18 @@ public:
 	class UInputAction* IA_Run;
 	void InputRun();
 
+	// 카메라 셰이크 블루프린트를 저장할 변수
+	UPROPERTY(EditDefaultsOnly, Category = CameraMotion)
+	TSubclassOf<class UCameraShakeBase> CameraShake;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputAction* IA_Fire;
 	// 총알 발사 처리
 	void InputFire(const struct FInputActionValue& inputValue);
+
+	// 총알 발사 사운드
+	UPROPERTY(EditDefaultsOnly, Category = Sound)
+	class USoundBase* BulletSound;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputAction* IA_HandGun;

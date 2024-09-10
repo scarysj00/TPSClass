@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "EnemyFSM.h"
 #include "PlayerAnim.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -56,15 +57,12 @@ ATPSPlayer::ATPSPlayer()
 	GetCharacterMovement()->AirControl = 1;
 
 	// 권총 (BerettaPistol의 정보)
-	// (X=-5.077071,Y=51.940998,Z=140.000000)
-	// (Pitch=0.000000,Yaw=-70.000000,Roll=0.000000)
-	// (X=2.000000,Y=2.000000,Z=2.000000)
 	// "/Script/Engine.SkeletalMesh'/Game/Resource/Bereta/source/BerettaPistol.BerettaPistol'"
 
 	// 권총을 생성하고 에셋 적용해서 플레이어에 배치하자.
 	HandGun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BerettaPistol"));
 	// 권총을 Mesh에 붙인다.
-	HandGun->SetupAttachment(GetMesh(), TEXT("FirePosition"));
+	HandGun->SetupAttachment(GetMesh(), TEXT("hand_rSocket"));
 	HandGun->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempHandGun(TEXT("/Script/Engine.SkeletalMesh'/Game/Resource/Beretta/source/BerettaPistol.BerettaPistol'"));
@@ -72,13 +70,17 @@ ATPSPlayer::ATPSPlayer()
 	if (tempHandGun.Succeeded())
 	{
 		HandGun->SetSkeletalMesh(tempHandGun.Object);
-		HandGun->SetRelativeLocationAndRotation(FVector(-5.f, 52.f, 140.f),FRotator(0, -60, 0));
+		HandGun->SetRelativeLocationAndRotation(FVector(-14.4f, 6.6f, 13.2f),FRotator(-4.8f, 41.1f, -16.7f));
 		HandGun->SetRelativeScale3D(FVector(2.f));
+		// 플레이어 애니메이션 동작에 맞게 재설정
+		// Location (X=-14.355527,Y=6.552245,Z=13.188408)
+		// Rotation (Pitch=-4.752025,Yaw=41.104528,Roll=-16.704775)
+		// Scale (X=2.000000,Y=2.000000,Z=2.000000)
 	}
 
 	// 스나이퍼 건을 생성해서 Mesh에 붙인다.
 	SniperGun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CheyTacRifle"));
-	SniperGun->SetupAttachment(GetMesh(), TEXT("ShotPosition"));
+	SniperGun->SetupAttachment(GetMesh(), TEXT("hand_rSocket"));
 	SniperGun->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	// 에셋도 로드해서 적용한다.
@@ -87,12 +89,21 @@ ATPSPlayer::ATPSPlayer()
 	if (tempSniperGun.Succeeded())
 	{
 		SniperGun->SetSkeletalMesh(tempSniperGun.Object);
-		SniperGun->SetRelativeLocationAndRotation(FVector(-14.6f, 63.7f, 147.f), FRotator(0, 0, 0));
-		SniperGun->SetRelativeScale3D(FVector(0.015f));
+		SniperGun->SetRelativeLocationAndRotation(FVector(-19.4f, -5.2f, 8.8f), FRotator(7.5f, 112.4f, -10.6f));
+		SniperGun->SetRelativeScale3D(FVector(0.011f));
 	}
-	// Location (X=-14.600000,Y=63.700000,Z=147.000000)
-	// Rotation (Pitch = 0.000000, Yaw = 0.000000, Roll = 0.000000)
-	// Scale (X = 0.015000, Y = 0.015000, Z = 0.015000)0,
+	// 플레이어 애니메이션 동작에 맞게 재설정
+	// Location (X=-19.383786,Y=-5.207941,Z=8.779197)
+	// Rotation (Pitch=7.518189,Yaw=112.364942,Roll=-10.632629)
+	// Scale (X = 0.011000, Y = 0.011000, Z = 0.011000)
+
+	// 총알 사운드 가져오기
+	ConstructorHelpers::FObjectFinder<USoundBase> tempSound(TEXT("/Script/Engine.SoundWave'/Game/Resource/Sound/SoundRifle.SoundRifle'"));
+	
+	if (tempSound.Succeeded())
+	{
+		BulletSound = tempSound.Object;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -110,7 +121,6 @@ void ATPSPlayer::BeginPlay()
 	SniperUI = CreateWidget(GetWorld(), SniperUIfactory);
 	// 일반 조준 모드 CrosshairUI 화면에 노출
 	// CrosshairUI->AddToViewport();
-
 
 	//// 화면에 나오게 한다.
 	//CrosshairUI->AddToViewport();
@@ -223,6 +233,14 @@ void ATPSPlayer::InputRun()
 
 void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 {
+	// 총알 발사 사운드 재생
+	UGameplayStatics::PlaySound2D(GetWorld(), BulletSound);
+	
+	// 카메라 셰이크 재생
+	auto CameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
+	CameraManager->StartCameraShake(CameraShake);
+
+	// 공격 애니메이션 재생
 	auto Anim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
 	Anim->PlayAttackAnim();
 
