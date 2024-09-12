@@ -27,7 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8E1824BB-10E3-34B5-875D-938C533377E0}</ProjectGuid>
+    <ProjectGuid>{89C67469-5ACC-3E71-9889-FF0823159FF6}</ProjectGuid>
     <RootNamespace>TPS</RootNamespace>
   </PropertyGroup>
   <Import Project="UECommon.props" />
@@ -125,6 +125,11 @@
       <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="..\..\Source\TPS\Private\EnemyAnim.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\..\Source\TPS\Private\EnemyFSM.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
@@ -152,6 +157,7 @@
     </ClCompile>
     <ClInclude Include="..\..\Source\TPS\Public\Bullet.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\Enemy.h"/>
+    <ClInclude Include="..\..\Source\TPS\Public\EnemyAnim.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\EnemyFSM.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\PlayerAnim.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\TPS.h"/>
