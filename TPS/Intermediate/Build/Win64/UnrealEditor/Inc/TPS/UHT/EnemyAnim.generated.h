@@ -14,12 +14,17 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define TPS_EnemyAnim_generated_h
 
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_15_SPARSE_DATA
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_15_SPARSE_DATA_PROPERTY_ACCESSORS
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_15_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_15_RPC_WRAPPERS_NO_PURE_DECLS
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_15_ACCESSORS
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_15_INCLASS_NO_PURE_DECLS \
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_SPARSE_DATA
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execOnEndAttackAnimation);
+
+
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_ACCESSORS
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_CALLBACK_WRAPPERS
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUEnemyAnim(); \
 	friend struct Z_Construct_UClass_UEnemyAnim_Statics; \
@@ -28,7 +33,7 @@ public: \
 	DECLARE_SERIALIZER(UEnemyAnim)
 
 
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_15_ENHANCED_CONSTRUCTORS \
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UEnemyAnim(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 private: \
@@ -42,17 +47,18 @@ public: \
 	NO_API virtual ~UEnemyAnim();
 
 
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_12_PROLOG
-#define FID_TPS_Source_TPS_Public_EnemyAnim_h_15_GENERATED_BODY \
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_10_PROLOG
+#define FID_TPS_Source_TPS_Public_EnemyAnim_h_13_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_TPS_Source_TPS_Public_EnemyAnim_h_15_SPARSE_DATA \
-	FID_TPS_Source_TPS_Public_EnemyAnim_h_15_SPARSE_DATA_PROPERTY_ACCESSORS \
-	FID_TPS_Source_TPS_Public_EnemyAnim_h_15_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
-	FID_TPS_Source_TPS_Public_EnemyAnim_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_TPS_Source_TPS_Public_EnemyAnim_h_15_ACCESSORS \
-	FID_TPS_Source_TPS_Public_EnemyAnim_h_15_INCLASS_NO_PURE_DECLS \
-	FID_TPS_Source_TPS_Public_EnemyAnim_h_15_ENHANCED_CONSTRUCTORS \
+	FID_TPS_Source_TPS_Public_EnemyAnim_h_13_SPARSE_DATA \
+	FID_TPS_Source_TPS_Public_EnemyAnim_h_13_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_TPS_Source_TPS_Public_EnemyAnim_h_13_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
+	FID_TPS_Source_TPS_Public_EnemyAnim_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_TPS_Source_TPS_Public_EnemyAnim_h_13_ACCESSORS \
+	FID_TPS_Source_TPS_Public_EnemyAnim_h_13_CALLBACK_WRAPPERS \
+	FID_TPS_Source_TPS_Public_EnemyAnim_h_13_INCLASS_NO_PURE_DECLS \
+	FID_TPS_Source_TPS_Public_EnemyAnim_h_13_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
