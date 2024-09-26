@@ -6,7 +6,8 @@
 			"description": "Default Uncontrolled Changelist",
 			"files": [
 				"S:/PolytechGM/TPSClass/TPS/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset",
-				"S:/PolytechGM/TPSClass/TPS/Content/Level/TPSMap.umap"
+				"S:/PolytechGM/TPSClass/TPS/Content/Level/TPSMap.umap",
+				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/BP_Enemy.uasset"
 			]
 		}
 	]
