@@ -36,7 +36,7 @@ void UEnemyFSM::BeginPlay()
     Anim = Cast<UEnemyAnim>(Me->GetMesh()->GetAnimInstance());
 
     // AAIController 할당
-    AI = Cast<AAIController>(Me->GetController());
+    // AI = Cast<AAIController>(Me->GetController());
 }
 
 
@@ -95,8 +95,8 @@ void UEnemyFSM::MoveState()
 	// 2. 방향이 필요하다.
 	FVector Dir = Destination - Me->GetActorLocation();
 	// 3. 방향으로 이동하고 싶다.
-	// Me->AddMovementInput(Dir.GetSafeNormal());
-    AI->MoveToLocation(Destination);
+	Me->AddMovementInput(Dir.GetSafeNormal());
+    // AI->MoveToLocation(Destination);
 
 	// 타깃과 가까워지면 공격 상태로 전환하고 싶다.
 	// 1. 만약 거리가 공격 범위 안에 들어오면
@@ -105,7 +105,7 @@ void UEnemyFSM::MoveState()
 		// 2. 공격 상태로 전환하고 싶다.
 		mState = EEnemyState::Attack;
         CurrentTime = 0;
-        AI->StopMovement();
+        // AI->StopMovement();
 
         // 애니메이션 상태 동기화
         Anim->AnimState = mState;
@@ -199,7 +199,7 @@ void UEnemyFSM::OnDamageProcess()
 		mState = EEnemyState::Damage;
 
         CurrentTime = 0;
-        AI->StopMovement();
+        // AI->StopMovement();
         // 피격 애니메이션 재생
         int32 index = FMath::RandRange(0, 1);
         FString SectionName = FString::Printf(TEXT("Damage%d"), index);
