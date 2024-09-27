@@ -7,7 +7,10 @@
 			"files": [
 				"S:/PolytechGM/TPSClass/TPS/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset",
 				"S:/PolytechGM/TPSClass/TPS/Content/Level/TPSMap.umap",
-				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/BP_Enemy.uasset"
+				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/BP_Enemy.uasset",
+				"S:/PolytechGM/TPSClass/TPS/Content/Animation/EnemyDamage_Montage.uasset",
+				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/ABP_Enemy.uasset",
+				"S:/PolytechGM/TPSClass/TPS/Content/ParagonKhaimera/Characters/Heroes/Khaimera/Meshes/Khaimera_Skeleton.uasset"
 			]
 		}
 	]

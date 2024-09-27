@@ -52,7 +52,7 @@ public:
 
 	// 대기 시간
 	UPROPERTY(EditDefaultsOnly, Category = FSM)
-	float IdleDelayTime = 2;
+	float IdleDelayTime = 2.0f;
 	// 경과 시간
 	float CurrentTime = 0;
 
@@ -68,10 +68,12 @@ public:
 	float AttackRange = 200.0f;
 	// 공격 대기 시간
 	UPROPERTY(EditAnywhere, Category = FSM)
-	float AttackDelayTime = 3.0f;
+	float AttackDelayTime = 2.0f;
 
 	// 피격 알림 이벤트
 	void OnDamageProcess();
+    // DamageEnd 애니메이션 전환 이벤트
+    void OnChangeMoveState();
 
 	// 체력
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = FSM)

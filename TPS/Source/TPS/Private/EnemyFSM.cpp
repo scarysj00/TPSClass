@@ -185,17 +185,17 @@ void UEnemyFSM::DamageState()
 {
 	// 일정 시간 기다렸다가 상태를 대기로 변경하고 싶다.
 	// 1. 시간이 흘렀으니까
-	CurrentTime += GetWorld()->DeltaTimeSeconds;
-	// 2. 만약 경과 시간이 대기 시간을 초과했다면
-	if (CurrentTime > DamageDelayTime)
-	{
-		// 3. 대기 상태로 전환하고 싶다.
-		mState = EEnemyState::Idle;
-		// 경과 시간 초기화
-		CurrentTime = 0;
-        // 애니메이션 상태 동기화
-        Anim->AnimState = mState;
-	}
+	//CurrentTime += GetWorld()->DeltaTimeSeconds;
+	//// 2. 만약 경과 시간이 대기 시간을 초과했다면
+	//if (CurrentTime > DamageDelayTime)
+	//{
+	//	// 3. 대기 상태로 전환하고 싶다.
+	//	mState = EEnemyState::Idle;
+	//	// 경과 시간 초기화
+	//	CurrentTime = 0;
+ //       // 애니메이션 상태 동기화
+ //       Anim->AnimState = mState;
+	//}
 }
 
 void UEnemyFSM::DieState()
@@ -255,6 +255,11 @@ void UEnemyFSM::OnDamageProcess()
 	}
     // 애니메이션 상태 동기화
     Anim->AnimState = mState;
+}
+
+void UEnemyFSM::OnChangeMoveState()
+{
+    mState = EEnemyState::Move;
 }
 
 // 랜덤 위치 가져오기
