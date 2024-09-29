@@ -135,6 +135,11 @@
       <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="..\..\Source\TPS\Private\EnemyManager.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>$(ClCompile_AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\..\Source\TPS\Private\PlayerAnim.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles)</ForcedIncludeFiles>
@@ -159,6 +164,7 @@
     <ClInclude Include="..\..\Source\TPS\Public\Enemy.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\EnemyAnim.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\EnemyFSM.h"/>
+    <ClInclude Include="..\..\Source\TPS\Public\EnemyManager.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\PlayerAnim.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\TPS.h"/>
     <ClInclude Include="..\..\Source\TPS\Public\TPSGameMode.h"/>
