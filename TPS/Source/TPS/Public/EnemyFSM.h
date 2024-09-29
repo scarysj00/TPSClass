@@ -69,15 +69,16 @@ public:
 	// 공격 대기 시간
 	UPROPERTY(EditAnywhere, Category = FSM)
 	float AttackDelayTime = 2.0f;
-
-	// 피격 알림 이벤트
+    
+    // 피격 알림 이벤트
 	void OnDamageProcess();
     // DamageEnd 애니메이션 전환 이벤트
     void OnChangeMoveState();
 
 	// 체력
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = FSM)
-	int32 HP = 3;
+    int32 HP = 2;
+    int32 MaxHP = 3;
 	// 피격 대기 시간
 	UPROPERTY(EditAnywhere, Category = FSM)
 	float DamageDelayTime = 2.0f;
@@ -97,4 +98,6 @@ public:
     FVector RandomPos;
     // 랜덤한 위치를 가져올 함수
     bool GetRandomPositionInNavMesh(FVector CenterLocation, float Radius, FVector& Dest);
+
+    void UpdateHP(int32 NewHP);
 };

@@ -11,7 +11,8 @@
 				"S:/PolytechGM/TPSClass/TPS/Content/Animation/EnemyDamage_Montage.uasset",
 				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/ABP_Enemy.uasset",
 				"S:/PolytechGM/TPSClass/TPS/Content/ParagonKhaimera/Characters/Heroes/Khaimera/Meshes/Khaimera_Skeleton.uasset",
-				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/BP_EnemySpawnPoint.uasset"
+				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/BP_EnemySpawnPoint.uasset",
+				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/WBP_EnemyHP.uasset"
 			]
 		}
 	]

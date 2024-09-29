@@ -39,8 +39,11 @@ void UEnemyFSM::BeginPlay()
 
     // AAIController 할당
     AI = Cast<AAIController>(Me->GetController());
-}
 
+    HP = 0;
+    UpdateHP(MaxHP);
+
+}
 
 // Called every frame
 void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -226,11 +229,12 @@ void UEnemyFSM::OnDamageProcess()
 {
 	// Me->Destroy();
 
+    // 피격을 당했으면 체력을 1 감소하고 싶다.
+    //UpdateHP(HP--);
     
-    // 체력 감소
-	HP--;
 	// 만약 체력이 남아있다면
-	if (HP > 0)
+    HP--;
+    if (HP > 0)
 	{
 		// 상태를 피격으로 전환
 		mState = EEnemyState::Damage;
@@ -271,4 +275,15 @@ bool UEnemyFSM::GetRandomPositionInNavMesh(FVector CenterLocation, float Radius,
     Dest = Loc.Location;
     return Result;
 }
+
+void UEnemyFSM::UpdateHP(int32 NewHP)
+{
+    HP = FMath::Max(0, HP + NewHP);
+
+    // HP += NewHP;
+    // if (HP < 0)
+    // HP = 0;
+
+}
+
 

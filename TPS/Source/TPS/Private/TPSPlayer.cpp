@@ -297,8 +297,8 @@ void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 		auto Enemy = HitInfo.GetActor()->GetDefaultSubobjectByName(TEXT("EnemyFSM"));
 		if (Enemy)
 		{
-			auto EnemyFSM = Cast<UEnemyFSM>(Enemy);
-			EnemyFSM->OnDamageProcess();
+            auto EnemyFSM = Cast<UEnemyFSM>(Enemy);
+            EnemyFSM->OnDamageProcess();
 		}
 	}	
 }
