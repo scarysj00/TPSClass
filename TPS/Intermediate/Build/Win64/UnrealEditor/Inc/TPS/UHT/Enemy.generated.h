@@ -19,6 +19,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #define FID_TPS_Source_TPS_Public_Enemy_h_12_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
 #define FID_TPS_Source_TPS_Public_Enemy_h_12_RPC_WRAPPERS_NO_PURE_DECLS
 #define FID_TPS_Source_TPS_Public_Enemy_h_12_ACCESSORS
+#define FID_TPS_Source_TPS_Public_Enemy_h_12_CALLBACK_WRAPPERS
 #define FID_TPS_Source_TPS_Public_Enemy_h_12_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAEnemy(); \
@@ -49,6 +50,7 @@ public: \
 	FID_TPS_Source_TPS_Public_Enemy_h_12_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS \
 	FID_TPS_Source_TPS_Public_Enemy_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
 	FID_TPS_Source_TPS_Public_Enemy_h_12_ACCESSORS \
+	FID_TPS_Source_TPS_Public_Enemy_h_12_CALLBACK_WRAPPERS \
 	FID_TPS_Source_TPS_Public_Enemy_h_12_INCLASS_NO_PURE_DECLS \
 	FID_TPS_Source_TPS_Public_Enemy_h_12_ENHANCED_CONSTRUCTORS \
 private: \

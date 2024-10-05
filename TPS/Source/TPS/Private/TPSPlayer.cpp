@@ -10,6 +10,7 @@
 #include "Bullet.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Enemy.h"
 #include "EnemyFSM.h"
 #include "PlayerAnim.h"
 #include "GameFramework/PlayerController.h"
@@ -295,10 +296,12 @@ void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 		
 		// 부딪힌 대상이 적인지 판단
 		auto Enemy = HitInfo.GetActor()->GetDefaultSubobjectByName(TEXT("EnemyFSM"));
+        // 맞은 물체가 적이라면
 		if (Enemy)
 		{
+            // 적이 피격 당했다고 알려준다.
             auto EnemyFSM = Cast<UEnemyFSM>(Enemy);
-            EnemyFSM->OnDamageProcess();
+            EnemyFSM->OnDamageProcess(1);
 		}
 	}	
 }

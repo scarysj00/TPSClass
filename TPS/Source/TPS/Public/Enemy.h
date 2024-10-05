@@ -34,4 +34,6 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadOnly)
     class UWidgetComponent* HPComp;
 
+    UFUNCTION(BlueprintImplementableEvent)
+    void DamgeUpdateHPUI(float HP, float MaxHP);
 };

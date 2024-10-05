@@ -39,10 +39,7 @@ void UEnemyFSM::BeginPlay()
 
     // AAIController 할당
     AI = Cast<AAIController>(Me->GetController());
-
-    HP = 0;
-    UpdateHP(MaxHP);
-
+    
 }
 
 // Called every frame
@@ -188,17 +185,17 @@ void UEnemyFSM::DamageState()
 {
 	// 일정 시간 기다렸다가 상태를 대기로 변경하고 싶다.
 	// 1. 시간이 흘렀으니까
-	//CurrentTime += GetWorld()->DeltaTimeSeconds;
-	//// 2. 만약 경과 시간이 대기 시간을 초과했다면
-	//if (CurrentTime > DamageDelayTime)
-	//{
-	//	// 3. 대기 상태로 전환하고 싶다.
-	//	mState = EEnemyState::Idle;
-	//	// 경과 시간 초기화
-	//	CurrentTime = 0;
- //       // 애니메이션 상태 동기화
- //       Anim->AnimState = mState;
-	//}
+	CurrentTime += GetWorld()->DeltaTimeSeconds;
+	// 2. 만약 경과 시간이 대기 시간을 초과했다면
+	if (CurrentTime > DamageDelayTime)
+	{
+        // 경과 시간 초기화
+        CurrentTime = 0;
+        // 3. 대기 상태로 전환하고 싶다.
+        mState = EEnemyState::Idle;
+        // 애니메이션 상태 동기화
+        Anim->AnimState = mState;
+	}
 }
 
 void UEnemyFSM::DieState()
@@ -209,51 +206,61 @@ void UEnemyFSM::DieState()
     {
         return;
     }
-    
-    // 계속 아래로 내려간다
-	// 등속 운동 공식 P = P0 + VT
-	FVector P0 = Me->GetActorLocation();
-	FVector VT = FVector::DownVector * DieSpeed * GetWorld()->DeltaTimeSeconds;
-	FVector P = P0 + VT;
-	Me->SetActorLocation(P);
+    // 시간이 흐르다가
+    CurrentTime += GetWorld()->GetDeltaSeconds();
+    // 현재 시간이 DieTime
+    if (CurrentTime > DieSpeed)
+    {
+        // 파괴된다
+        Me->Destroy();
+    }
+    else
+    {
+        FVector NewLoc = FMath::Lerp(Me->GetActorLocation(), DieEndLoc, GetWorld()->GetDeltaSeconds() * 2);
 
-	// 만약 2미터 이상 내려왔다면
-	if (P.Z < -200.0f)
-	{
-		// 제거시킨다.
-		Me->Destroy();
-	}
+        Me->SetActorLocation(NewLoc);
+    }
+    // 계속 아래로 내려간다
+	//// 등속 운동 공식 P = P0 + VT
+	//FVector P0 = Me->GetActorLocation();
+	//FVector VT = FVector::DownVector * DieSpeed * GetWorld()->DeltaTimeSeconds;
+	//FVector P = P0 + VT;
+	//Me->SetActorLocation(P);
+
+	//// 만약 2미터 이상 내려왔다면
+	//if (P.Z < -200.0f)
+	//{
+	//	// 제거시킨다.
+	//	Me->Destroy();
+	//}
 }
 
-void UEnemyFSM::OnDamageProcess()
+void UEnemyFSM::OnDamageProcess(int32 Damage)
 {
-	// Me->Destroy();
-
-    // 피격을 당했으면 체력을 1 감소하고 싶다.
-    //UpdateHP(HP--);
-    
-	// 만약 체력이 남아있다면
-    HP--;
+    AI->StopMovement();
+    // 피격을 당했으면 체력을 1 감소시킨다.
+    // HP -= Damage;
+    UpdateHP(-Damage);
+    // 체력이 0보다 크면 
     if (HP > 0)
-	{
-		// 상태를 피격으로 전환
-		mState = EEnemyState::Damage;
-
+    {
+        // 피격 상태로 전환한다.
         CurrentTime = 0;
-        AI->StopMovement();
+        mState = EEnemyState::Damage;
         // 피격 애니메이션 재생
         int32 index = FMath::RandRange(0, 1);
         FString SectionName = FString::Printf(TEXT("Damage%d"), index);
         Anim->PlayDamageAnim(FName(*SectionName));
-	}
-	// 그렇지 않다면
-	else
-	{
-		// 상태를 죽음으로 전환
-		mState = EEnemyState::Die;
-
-		// 캡슐 컴포넌트 충돌체 비활성화
+    }
+    // 그 외에 0 이하가 되면 
+    else
+    {
+        // 죽음 상태로 전환한다.
+        CurrentTime = 0;
+        mState = EEnemyState::Die;
+        // 캡슐 컴포넌트 충돌체 비활성화
 		Me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        DieEndLoc = Me->GetActorLocation() + FVector::DownVector * 200;
         // 죽음 애니메이션 재생
         Anim->PlayDamageAnim(TEXT("Die"));
 	}
@@ -279,11 +286,17 @@ bool UEnemyFSM::GetRandomPositionInNavMesh(FVector CenterLocation, float Radius,
 void UEnemyFSM::UpdateHP(int32 NewHP)
 {
     HP = FMath::Max(0, HP + NewHP);
-
     // HP += NewHP;
-    // if (HP < 0)
-    // HP = 0;
+    // if (HP < 0) { HP = 0; }
 
+    // UI를 갱신하고 싶다.
+    Me->DamgeUpdateHPUI(HP, MaxHP);
+}
+
+void UEnemyFSM::InitHP()
+{
+    HP = 0;
+    UpdateHP(MaxHP);
 }
 
 

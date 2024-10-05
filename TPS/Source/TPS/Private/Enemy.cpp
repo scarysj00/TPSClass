@@ -67,7 +67,9 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+    // EnemyFSM의 체력을 초기화 하고 싶다.
+    EnemyFSM->InitHP();
 }
 
 // Called every frame

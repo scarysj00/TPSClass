@@ -16,8 +16,54 @@ void EmptyLinkFunctionForGeneratedCodeEnemy() {}
 	UMG_API UClass* Z_Construct_UClass_UWidgetComponent_NoRegister();
 	UPackage* Z_Construct_UPackage__Script_TPS();
 // End Cross Module References
+	struct Enemy_eventDamgeUpdateHPUI_Parms
+	{
+		float HP;
+		float MaxHP;
+	};
+	static FName NAME_AEnemy_DamgeUpdateHPUI = FName(TEXT("DamgeUpdateHPUI"));
+	void AEnemy::DamgeUpdateHPUI(float HP, float MaxHP)
+	{
+		Enemy_eventDamgeUpdateHPUI_Parms Parms;
+		Parms.HP=HP;
+		Parms.MaxHP=MaxHP;
+		ProcessEvent(FindFunctionChecked(NAME_AEnemy_DamgeUpdateHPUI),&Parms);
+	}
 	void AEnemy::StaticRegisterNativesAEnemy()
 	{
+	}
+	struct Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics
+	{
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_HP;
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_MaxHP;
+		static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UECodeGen_Private::FFunctionParams FuncParams;
+	};
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::NewProp_HP = { "HP", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(Enemy_eventDamgeUpdateHPUI_Parms, HP), METADATA_PARAMS(0, nullptr) };
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::NewProp_MaxHP = { "MaxHP", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(Enemy_eventDamgeUpdateHPUI_Parms, MaxHP), METADATA_PARAMS(0, nullptr) };
+	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::NewProp_HP,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::NewProp_MaxHP,
+	};
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Public/Enemy.h" },
+	};
+#endif
+	const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AEnemy, nullptr, "DamgeUpdateHPUI", nullptr, nullptr, Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::PropPointers), sizeof(Enemy_eventDamgeUpdateHPUI_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x08020800, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::Function_MetaDataParams), Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::Function_MetaDataParams) };
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::PropPointers) < 2048);
+	static_assert(sizeof(Enemy_eventDamgeUpdateHPUI_Parms) < MAX_uint16);
+	UFunction* Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI_Statics::FuncParams);
+		}
+		return ReturnFunction;
 	}
 	IMPLEMENT_CLASS_NO_AUTO_REGISTRATION(AEnemy);
 	UClass* Z_Construct_UClass_AEnemy_NoRegister()
@@ -27,6 +73,7 @@ void EmptyLinkFunctionForGeneratedCodeEnemy() {}
 	struct Z_Construct_UClass_AEnemy_Statics
 	{
 		static UObject* (*const DependentSingletons[])();
+		static const FClassFunctionLinkInfo FuncInfo[];
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
@@ -47,6 +94,10 @@ void EmptyLinkFunctionForGeneratedCodeEnemy() {}
 		(UObject* (*)())Z_Construct_UPackage__Script_TPS,
 	};
 	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AEnemy_Statics::DependentSingletons) < 16);
+	const FClassFunctionLinkInfo Z_Construct_UClass_AEnemy_Statics::FuncInfo[] = {
+		{ &Z_Construct_UFunction_AEnemy_DamgeUpdateHPUI, "DamgeUpdateHPUI" }, // 3092495594
+	};
+	static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AEnemy_Statics::FuncInfo) < 2048);
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AEnemy_Statics::Class_MetaDataParams[] = {
 		{ "HideCategories", "Navigation" },
@@ -88,11 +139,11 @@ void EmptyLinkFunctionForGeneratedCodeEnemy() {}
 		"Game",
 		&StaticCppClassTypeInfo,
 		DependentSingletons,
-		nullptr,
+		FuncInfo,
 		Z_Construct_UClass_AEnemy_Statics::PropPointers,
 		nullptr,
 		UE_ARRAY_COUNT(DependentSingletons),
-		0,
+		UE_ARRAY_COUNT(FuncInfo),
 		UE_ARRAY_COUNT(Z_Construct_UClass_AEnemy_Statics::PropPointers),
 		0,
 		0x009000A4u,
@@ -118,9 +169,9 @@ void EmptyLinkFunctionForGeneratedCodeEnemy() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_Enemy_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_AEnemy, AEnemy::StaticClass, TEXT("AEnemy"), &Z_Registration_Info_UClass_AEnemy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEnemy), 1499456115U) },
+		{ Z_Construct_UClass_AEnemy, AEnemy::StaticClass, TEXT("AEnemy"), &Z_Registration_Info_UClass_AEnemy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEnemy), 3396795144U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_Enemy_h_3640804527(TEXT("/Script/TPS"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_Enemy_h_3013029977(TEXT("/Script/TPS"),
 		Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_Enemy_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_TPS_Source_TPS_Public_Enemy_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);

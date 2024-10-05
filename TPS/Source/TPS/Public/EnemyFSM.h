@@ -71,20 +71,23 @@ public:
 	float AttackDelayTime = 2.0f;
     
     // 피격 알림 이벤트
-	void OnDamageProcess();
+	void OnDamageProcess(int32 Damage);
     // DamageEnd 애니메이션 전환 이벤트
     void OnChangeMoveState();
 
-	// 체력
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = FSM)
-    int32 HP = 2;
-    int32 MaxHP = 3;
+    // 체력, 최대 체력
+    // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = FSM)
+    int32 HP;
+    int32 MaxHP = 10;
 	// 피격 대기 시간
 	UPROPERTY(EditAnywhere, Category = FSM)
 	float DamageDelayTime = 2.0f;
 	// 아래로 사라지는 속도
 	UPROPERTY(EditAnywhere, Category = FSM)
 	float DieSpeed = 50.0f;
+
+    // 죽었을 때 내려갈 목적지를 정하고 싶다.
+    FVector DieEndLoc;
 
     // 사용 중인 애니메이션 블루프린트
     UPROPERTY()
@@ -98,6 +101,8 @@ public:
     FVector RandomPos;
     // 랜덤한 위치를 가져올 함수
     bool GetRandomPositionInNavMesh(FVector CenterLocation, float Radius, FVector& Dest);
-
+    // 체력 갱신 함수
     void UpdateHP(int32 NewHP);
+    // 체력 초기화 함수
+    void InitHP();
 };
