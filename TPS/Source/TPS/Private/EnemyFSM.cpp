@@ -209,7 +209,7 @@ void UEnemyFSM::DieState()
     // 시간이 흐르다가
     CurrentTime += GetWorld()->GetDeltaSeconds();
     // 현재 시간이 DieTime
-    if (CurrentTime > DieSpeed)
+    if (CurrentTime == 0)
     {
         // 파괴된다
         Me->Destroy();
