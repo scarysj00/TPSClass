@@ -14,7 +14,10 @@
 				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/BP_EnemySpawnPoint.uasset",
 				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/WBP_EnemyHP.uasset",
 				"S:/PolytechGM/TPSClass/TPS/Content/Blueprint/BP_TPSPlayer.uasset",
-				"S:/PolytechGM/TPSClass/TPS/Content/Input/IMC_TPS.uasset"
+				"S:/PolytechGM/TPSClass/TPS/Content/Input/IMC_TPS.uasset",
+				"S:/PolytechGM/TPSClass/TPS/Content/InterfaceTest/BP_Unit1.uasset",
+				"S:/PolytechGM/TPSClass/TPS/Content/InterfaceTest/BP_Unit2.uasset",
+				"S:/PolytechGM/TPSClass/TPS/Content/InterfaceTest/BI_Unit.uasset"
 			]
 		}
 	]
