@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TPSPlayer.h"
+#include "PlayerMoveComp.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -104,15 +105,15 @@ ATPSPlayer::ATPSPlayer()
 	{
 		BulletSound = tempSound.Object;
 	}
+
+    // 플레이어 이동 컴포넌트 추가
+    PlayerMoveComp = CreateDefaultSubobject<UPlayerMoveComp>(TEXT("PlayerMoveComp"));
 }
 
 // Called when the game starts or when spawned
 void ATPSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// 초기 속도를 걷기로 설정
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
 	// 시작할 때 두 개의 위젯을 생성한다.
 	// 크로스헤어 UI 위젯 인스턴스 생성
@@ -147,8 +148,6 @@ void ATPSPlayer::BeginPlay()
 void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	PlayerMove();
 }
 
 // Called to bind functionality to input
@@ -160,13 +159,8 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	auto PlayerInput = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	if (PlayerInput)
 	{
-		PlayerInput->BindAction(IA_Turn, ETriggerEvent::Triggered, this, &ATPSPlayer::Turn);
-		PlayerInput->BindAction(IA_LookUp, ETriggerEvent::Triggered, this, &ATPSPlayer::LookUp);
-		PlayerInput->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
-		PlayerInput->BindAction(IA_Jump, ETriggerEvent::Started, this, &ATPSPlayer::InputJump);
-		// 뛰기 애니메이션
-		PlayerInput->BindAction(IA_Run, ETriggerEvent::Started, this, &ATPSPlayer::InputRun);
-		PlayerInput->BindAction(IA_Run, ETriggerEvent::Completed, this, &ATPSPlayer::InputRun);
+        // 컴포넌트에서 입력 바인딩 처리를 할 수 있게 호출
+        PlayerMoveComp->SetupInputBinding(PlayerInput);
 		
 		PlayerInput->BindAction(IA_Fire, ETriggerEvent::Started, this, &ATPSPlayer::InputFire);
 		// 총 교체 이벤트 처리
@@ -175,59 +169,6 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		// 스나이퍼 조준 모드
 		PlayerInput->BindAction(IA_Sniper, ETriggerEvent::Started, this, &ATPSPlayer::SniperAim);
 		PlayerInput->BindAction(IA_Sniper, ETriggerEvent::Completed, this, &ATPSPlayer::SniperAim);
-	}
-}
-
-void ATPSPlayer::Turn(const FInputActionValue& inputValue)
-{
-	float value = inputValue.Get<float>();
-	AddControllerYawInput(value);
-}
-
-void ATPSPlayer::LookUp(const FInputActionValue& inputValue)
-{
-	float value = inputValue.Get<float>();
-	AddControllerPitchInput(value);
-}
-
-void ATPSPlayer::Move(const FInputActionValue& inputValue)
-{
-	FVector2D value = inputValue.Get<FVector2D>();
-	// 상하 입력 처리
-	Direction.X = value.X;
-	// 좌우 입력 처리
-	Direction.Y = value.Y;
-}
-
-void ATPSPlayer::InputJump(const FInputActionValue& inputValue)
-{
-	Jump();
-}
-
-void ATPSPlayer::PlayerMove()
-{
-	Direction = FTransform(GetControlRotation()).TransformVector(Direction);
-	// 등속 운동 공식 : P (이동할 위치) = P0 (현재 위치) + V (속도 * 방향) * T (시간)
-	/*FVector P0 = GetActorLocation();
-	FVector VT = Direction * WalkSpeed * DeltaTime;
-	FVector P = P0 + VT;
-	SetActorLocation(P);*/
-	AddMovementInput(Direction);
-	Direction = FVector::ZeroVector;
-}
-
-void ATPSPlayer::InputRun()
-{
-	auto Movement = GetCharacterMovement();
-	// 만약, 현재 달리기 모드라면
-	if (Movement->MaxWalkSpeed > WalkSpeed)
-	{
-		// 걷기 속도로 전환
-		Movement->MaxWalkSpeed = WalkSpeed;
-	}
-	else
-	{
-		Movement->MaxWalkSpeed = RunSpeed;
 	}
 }
 

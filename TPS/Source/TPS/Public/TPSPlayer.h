@@ -50,42 +50,7 @@ public:
 	// 입력 처리 함수 제작
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputMappingContext* IMC_TPS;
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	class UInputAction* IA_LookUp;
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	class UInputAction* IA_Turn;
-
-	// 좌우 회전
-	void Turn(const struct FInputActionValue& inputValue);
-	// 상하 회전
-	void LookUp(const struct FInputActionValue& inputValue);
-
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	class UInputAction* IA_Move;
-	// 이동 속도
-	UPROPERTY(EditAnywhere, Category = PlayerSetting)
-	float WalkSpeed = 300;
-	// 달리기 속도
-	UPROPERTY(EditAnywhere, Category = PlayerSetting)
-	float RunSpeed = 600;
-	// 이동 방향
-	FVector Direction;
-
-	void Move(const struct FInputActionValue& inputValue);
-
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	class UInputAction* IA_Jump;
-	// 점프 입력 처리
-	void InputJump(const struct FInputActionValue& inputValue);
 	
-	// 플레이어 이동 처리
-	void PlayerMove();
-
-	// 플레이어 뛰기
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	class UInputAction* IA_Run;
-	void InputRun();
-
 	// 카메라 셰이크 블루프린트를 저장할 변수
 	UPROPERTY(EditDefaultsOnly, Category = CameraMotion)
 	TSubclassOf<class UCameraShakeBase> CameraShake;
@@ -138,4 +103,9 @@ public:
 	// 총알 파편 효과 공장
 	UPROPERTY(EditAnywhere, Category=BulletEffect)
 	class UParticleSystem* BulletEffectFactory;
+
+    public:
+        // 이동 컴포넌트 등록
+        UPROPERTY(VisibleAnywhere, Category = Component)
+        class UPlayerBaseComponent* PlayerMoveComp;
 };

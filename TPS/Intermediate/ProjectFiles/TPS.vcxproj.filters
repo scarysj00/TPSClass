@@ -54,6 +54,12 @@
     <ClCompile Include="..\..\Source\TPS\Private\PlayerAnim.cpp">
       <Filter>Source\TPS\Private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\TPS\Private\PlayerBaseComponent.cpp">
+      <Filter>Source\TPS\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\TPS\Private\PlayerMoveComp.cpp">
+      <Filter>Source\TPS\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\TPS\Private\TPS.cpp">
       <Filter>Source\TPS\Private</Filter>
     </ClCompile>
@@ -82,6 +88,12 @@
       <Filter>Source\TPS\Public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\TPS\Public\PlayerAnim.h">
+      <Filter>Source\TPS\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\TPS\Public\PlayerBaseComponent.h">
+      <Filter>Source\TPS\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\TPS\Public\PlayerMoveComp.h">
       <Filter>Source\TPS\Public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\TPS\Public\TPS.h">
